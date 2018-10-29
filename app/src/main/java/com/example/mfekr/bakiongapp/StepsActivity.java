@@ -33,4 +33,5 @@ public class StepsActivity extends AppCompatActivity {
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }
+
 }

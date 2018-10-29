@@ -43,11 +43,12 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StepsViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final StepsViewHolder holder, int position) {
 
 
-        holder.tv_steps.setText(mSteps.get(position).getShortDescription());
-        
+        //holder.tv_steps.setText(mSteps.get(position).getShortDescription());
+        holder.bind(mSteps.get(position),mListener);
+
 
         ///
         //------------------------------------------------------------------------------//
@@ -69,28 +70,36 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         return mSteps.size();
     }
 
-    public class StepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class StepsViewHolder extends RecyclerView.ViewHolder {
 
         final TextView tv_steps;
+
 
         public StepsViewHolder(View itemView) {
             super(itemView);
 
             tv_steps = itemView.findViewById(R.id.tv_steps_list);
-            itemView.setOnClickListener(this);
+           //itemView.setOnClickListener(this);
 
         }
 
-        @Override
-        public void onClick(View view) {
-            int selectedPosition = getAdapterPosition();
-            mListener.onStepItemClick(selectedPosition);
-        }
-    }
+//        @Override
+//        public void onClick(View view) {
+//            int selectedPosition = getAdapterPosition();
+//            mListener.onStepItemClick(selectedPosition);
+//            notifyDataSetChanged();
+//        }
 
-
-
-
+        public void bind(final Step step, final StepItemClickListener listener) {
+            tv_steps.setText(step.getShortDescription());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    int selectedPosition = getAdapterPosition();
+                    listener.onStepItemClick(selectedPosition);
+                }
+            });
+   }
+   }
 
 }
 

@@ -21,7 +21,7 @@ public class RecipesActivity extends AppCompatActivity implements RecipeDetailsF
     Recipe recipe;
     RecipeDetailsFragment mDetailsFragment;
 
-    //private ArrayList<Step> mSteps;
+    List<Step> mSteps;
 
 
     @Override
@@ -38,7 +38,7 @@ public class RecipesActivity extends AppCompatActivity implements RecipeDetailsF
         myfragment.setArguments(bundle);
 
 
-
+//        sendDataToFragment(recipe);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -56,6 +56,7 @@ public class RecipesActivity extends AppCompatActivity implements RecipeDetailsF
             detailFragmentManager.beginTransaction()
                     .add(R.id.step_details_container, fragment)
                     .commit();
+
 
         } else {
             mTwoPane = false;
@@ -78,8 +79,10 @@ public class RecipesActivity extends AppCompatActivity implements RecipeDetailsF
         Step step = recipe.getSteps().get(position);
 
         if (mTwoPane) {
-
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("step", step);
             mDetailsFragment = new RecipeDetailsFragment();
+            mDetailsFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.step_details_container, mDetailsFragment)
                     .commit();
@@ -95,6 +98,10 @@ public class RecipesActivity extends AppCompatActivity implements RecipeDetailsF
         }
 
     }
+
+
+
+
 
 
 }
