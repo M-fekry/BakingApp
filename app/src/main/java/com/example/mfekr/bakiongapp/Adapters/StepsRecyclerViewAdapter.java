@@ -1,31 +1,32 @@
 package com.example.mfekr.bakiongapp.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mfekr.bakiongapp.Model.Step;
 import com.example.mfekr.bakiongapp.R;
-import com.example.mfekr.bakiongapp.StepsActivity;
 
 import java.util.List;
 
 public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepsViewHolder> {
 
 
-    List<Step> mSteps;
-    Context mContext;
+    private  final List<Step> mSteps;
+    //private final Context mContext;
+    private final StepItemClickListener listener;
+  //p // private int mRowSelected;
+   // private boolean mIsRowSelected;
+   // private boolean mIsTwoPane;
+    public int selectedPosition;
 
-    public StepsRecyclerViewAdapter(List<Step> steps, Context context) {
-        mSteps = steps;
-        mContext = context;
+    public StepsRecyclerViewAdapter(List<Step> mSteps, StepItemClickListener listener) {
+        this.mSteps = mSteps;
+        this.listener = listener;
     }
 
     @NonNull
@@ -41,19 +42,22 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     public void onBindViewHolder(@NonNull StepsViewHolder holder, final int position) {
 
 
-        holder.tv_steps.setText(mSteps.get(position).getShortDescription());
+        holder.bind(position);
+        
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Step step = mSteps.get(position);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("step", step);
-                Intent i = new Intent(mContext,StepsActivity.class);
-                i.putExtras(bundle);
-                mContext.startActivity(i);
-            }
-        });
+        ///
+        //------------------------------------------------------------------------------//
+//        holder.mView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Step step = mSteps.get(position);
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable("step", step);
+//                Intent i = new Intent(mContext,StepsActivity.class);
+//                i.putExtras(bundle);
+//                mContext.startActivity(i);
+//            }
+//        });
     }
 
     @Override
@@ -61,16 +65,37 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         return mSteps.size();
     }
 
-    public class StepsViewHolder extends RecyclerView.ViewHolder{
+    public class StepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView tv_steps;
         View mView;
         public StepsViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-             tv_steps = itemView.findViewById(R.id.tv_steps_list);
+            tv_steps = itemView.findViewById(R.id.tv_steps_list);
+            itemView.setOnClickListener(this);
 
         }
+
+        ////
+        //-----------------------------//
+        private void bind(int listIndex){
+            Step step = mSteps.get(listIndex);
+            tv_steps.setText(step.getShortDescription());
+        }
+        @Override
+        public void onClick(View view) {
+            selectedPosition = getAdapterPosition();
+            listener.onStepItemClick(selectedPosition);
+            notifyDataSetChanged();
+        }
     }
+
+
+    public interface StepItemClickListener {
+        void onStepItemClick(int rowSelected);
+    }
+
+
 }
 

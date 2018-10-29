@@ -10,17 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.mfekr.bakiongapp.Adapters.IngrediantsRecyclerViewAdapter;
 import com.example.mfekr.bakiongapp.Adapters.StepsRecyclerViewAdapter;
-import com.example.mfekr.bakiongapp.Model.Ingredient;
 import com.example.mfekr.bakiongapp.Model.Recipe;
-import com.example.mfekr.bakiongapp.Model.Step;
 import com.example.mfekr.bakiongapp.R;
 import com.example.mfekr.bakiongapp.RecipesActivity;
-
-import java.util.List;
 
 public class RecipeDetailsFragment extends Fragment{
 
@@ -29,6 +24,14 @@ public class RecipeDetailsFragment extends Fragment{
     private IngrediantsRecyclerViewAdapter mIngredientAdapter;
     private StepsRecyclerViewAdapter mStepsAdapter;
     private Recipe recipe;
+    OnStepClickListener mCallback;
+    int clickedItemIndex;
+    StepsRecyclerViewAdapter.StepItemClickListener mListener;
+//    private Context mContext;
+//    private ArrayList<Step> mSteps;
+//    private  int mRowSelected = 0;
+//    private  boolean mIsRowSelected = false;
+//    private boolean mTwoPane;
 
 
 
@@ -37,9 +40,27 @@ public class RecipeDetailsFragment extends Fragment{
 
     }
 
-    public interface OnStepSelectedListener {
-        void onStepSelected(List<Step> steps, int position);
+//    public void setSteps(ArrayList<Step> steps) {
+//        mSteps = steps;
+//    }
+//
+//    public void setTwoPane(boolean twoPane) {
+//        mTwoPane = twoPane;
+//    }
+
+
+
+
+
+    public interface OnStepClickListener{
+        void onStepSelected(int position);
     }
+
+    //
+    //----------------------------------------------/---//
+//    public interface OnStepSelectedListener {
+//        void onStepSelected(List<Step> steps, int position);
+//    }
 
 
     @Nullable
@@ -81,7 +102,7 @@ public class RecipeDetailsFragment extends Fragment{
     }
 
     private void setUpStepsList(RecyclerView recyclerView){
-        mStepsAdapter = new StepsRecyclerViewAdapter(recipe.getSteps(),getContext());
+        mStepsAdapter = new StepsRecyclerViewAdapter(recipe.getSteps(),mListener);
         RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mlayoutManager);
         recyclerView.setHasFixedSize(true);
@@ -94,4 +115,6 @@ public class RecipeDetailsFragment extends Fragment{
         ((RecipesActivity) getActivity())
                 .setActionBarTitle(recipe.getName());
     }
+
+
 }

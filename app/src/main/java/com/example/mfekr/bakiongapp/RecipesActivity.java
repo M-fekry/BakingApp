@@ -12,12 +12,15 @@ import com.example.mfekr.bakiongapp.Fragments.StepDetailsFragment;
 import com.example.mfekr.bakiongapp.Model.Recipe;
 import com.example.mfekr.bakiongapp.Model.Step;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecipesActivity extends AppCompatActivity{
+public class RecipesActivity extends AppCompatActivity implements RecipeDetailsFragment.OnStepClickListener{
 
     TextView mTextView;
     private boolean mTwoPane;
+    Recipe recipe;
+    //private ArrayList<Step> mSteps;
 
 
     @Override
@@ -27,7 +30,7 @@ public class RecipesActivity extends AppCompatActivity{
 
 
         Bundle bundle = getIntent().getExtras();
-        Recipe recipe = bundle.getParcelable("recipe");
+        recipe = bundle.getParcelable("recipe");
         bundle.putParcelable("recipe", recipe);
         RecipeDetailsFragment myfragment = new RecipeDetailsFragment();
         myfragment.setArguments(bundle);
@@ -41,26 +44,7 @@ public class RecipesActivity extends AppCompatActivity{
                 .add(R.id.ingredient_container, myfragment)
                 .commit();
 
-        if(findViewById(R.id.baking_linear_layout) != null){
-            mTwoPane = true;
 
-            if(savedInstanceState == null) {
-                Bundle mbundle = getIntent().getExtras();
-
-                Step step = mbundle.getParcelable("step");
-
-                bundle.putParcelable("step", step);
-
-                StepDetailsFragment fragment = new StepDetailsFragment();
-                fragment.setArguments(mbundle);
-                FragmentManager manager = getSupportFragmentManager();
-                manager.beginTransaction()
-                        .add(R.id.step_details_container, fragment)
-                        .commit();
-            }
-        }else {
-            mTwoPane =false;
-        }
 
     }
 
@@ -85,6 +69,77 @@ public class RecipesActivity extends AppCompatActivity{
         getSupportActionBar().setTitle(title);
     }
 
+
+//    @Override
+//    public void onStepSelected(int position) {
+//        Step step = recipe.getSteps().get(position);
+//
+//        if (mTwoPane){
+//            StepDetailsFragment detailFragment = new StepDetailsFragment();
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelable("step", step);
+//            detailFragment.setArguments(bundle);
+//
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.step_details_containe, detailFragment)
+//                    .commit();
+//        } else {
+//            Intent i = new Intent(this,StepsActivity.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelable("step", step);
+//            i.putExtras(bundle);
+//            startActivity(i);
+//        }
+//    }
+
+    @Override
+    public void onStepSelected(int position) {
+        Step step = recipe.getSteps().get(position);
+
+//        if (findViewById(R.id.steps_600dp) != null) {
+////            loadFragmentsForDetailPane(step);
+////        } else {
+////           step = mSteps.get(getStepPos(step));
+////                Bundle bundle = new Bundle();
+////                bundle.putParcelable("step", step);
+////                Intent i = new Intent(this,StepsActivity.class);
+////                i.putExtras(bundle);
+////                startActivity(i);
+////        }
+        if (mTwoPane){
+            StepDetailsFragment detailFragment = new StepDetailsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("step", step);
+            detailFragment.setArguments(bundle);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.step_details_container, detailFragment)
+                    .commit();
+        }
+        else {
+            Intent intent = new Intent(this, StepsActivity.class);
+            intent.putExtra("step", step);
+            startActivity(intent);
+        }
+    }
+
+//    private int getStepPos(Step step) {
+////        return mSteps.indexOf(step);
+////    }
+
+    void loadFragmentsForDetailPane(Step step) {
+        StepDetailsFragment detailFragment = new StepDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("step", step);
+        detailFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.step_details_container, detailFragment)
+                .commit();
+    }
 //    @Override
 //    public void onStepSelected(List<Step> steps, int position) {
 //        Step step = steps.get(position);
