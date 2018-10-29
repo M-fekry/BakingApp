@@ -16,17 +16,21 @@ import java.util.List;
 public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepsViewHolder> {
 
 
-    private  final List<Step> mSteps;
-    //private final Context mContext;
-    private final StepItemClickListener listener;
-  //p // private int mRowSelected;
-   // private boolean mIsRowSelected;
-   // private boolean mIsTwoPane;
-    public int selectedPosition;
 
-    public StepsRecyclerViewAdapter(List<Step> mSteps, StepItemClickListener listener) {
+    List<Step> mSteps;
+
+    StepItemClickListener mListener;
+    Context mContext;
+
+    public interface StepItemClickListener {
+        void onStepItemClick(int position);
+    }
+
+    public StepsRecyclerViewAdapter(List<Step> mSteps,Context mContext, StepItemClickListener mListener) {
         this.mSteps = mSteps;
-        this.listener = listener;
+        this.mContext = mContext;
+        this.mListener = mListener;
+
     }
 
     @NonNull
@@ -42,7 +46,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     public void onBindViewHolder(@NonNull StepsViewHolder holder, final int position) {
 
 
-        holder.bind(position);
+        holder.tv_steps.setText(mSteps.get(position).getShortDescription());
         
 
         ///
@@ -67,34 +71,25 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
 
     public class StepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView tv_steps;
-        View mView;
+        final TextView tv_steps;
+
         public StepsViewHolder(View itemView) {
             super(itemView);
-            mView = itemView;
+
             tv_steps = itemView.findViewById(R.id.tv_steps_list);
             itemView.setOnClickListener(this);
 
         }
 
-        ////
-        //-----------------------------//
-        private void bind(int listIndex){
-            Step step = mSteps.get(listIndex);
-            tv_steps.setText(step.getShortDescription());
-        }
         @Override
         public void onClick(View view) {
-            selectedPosition = getAdapterPosition();
-            listener.onStepItemClick(selectedPosition);
-            notifyDataSetChanged();
+            int selectedPosition = getAdapterPosition();
+            mListener.onStepItemClick(selectedPosition);
         }
     }
 
 
-    public interface StepItemClickListener {
-        void onStepItemClick(int rowSelected);
-    }
+
 
 
 }

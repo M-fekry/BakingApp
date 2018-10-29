@@ -1,6 +1,7 @@
 package com.example.mfekr.bakiongapp.Fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,22 +18,21 @@ import com.example.mfekr.bakiongapp.Model.Recipe;
 import com.example.mfekr.bakiongapp.R;
 import com.example.mfekr.bakiongapp.RecipesActivity;
 
-public class RecipeDetailsFragment extends Fragment{
+public class RecipeDetailsFragment extends Fragment implements StepsRecyclerViewAdapter.StepItemClickListener{
 
     private RecyclerView mIngrediantsRecyclerView;
     private RecyclerView mStepsRecyclerView;
     private IngrediantsRecyclerViewAdapter mIngredientAdapter;
     private StepsRecyclerViewAdapter mStepsAdapter;
-    private Recipe recipe;
-    OnStepClickListener mCallback;
-    int clickedItemIndex;
-    StepsRecyclerViewAdapter.StepItemClickListener mListener;
-//    private Context mContext;
-//    private ArrayList<Step> mSteps;
-//    private  int mRowSelected = 0;
-//    private  boolean mIsRowSelected = false;
-//    private boolean mTwoPane;
 
+
+    Recipe recipe;
+    OnStepClickListener mCallback;
+    Context context;
+
+    public interface OnStepClickListener{
+        void onStepSelected(int position);
+    }
 
 
 
@@ -40,27 +40,7 @@ public class RecipeDetailsFragment extends Fragment{
 
     }
 
-//    public void setSteps(ArrayList<Step> steps) {
-//        mSteps = steps;
-//    }
-//
-//    public void setTwoPane(boolean twoPane) {
-//        mTwoPane = twoPane;
-//    }
 
-
-
-
-
-    public interface OnStepClickListener{
-        void onStepSelected(int position);
-    }
-
-    //
-    //----------------------------------------------/---//
-//    public interface OnStepSelectedListener {
-//        void onStepSelected(List<Step> steps, int position);
-//    }
 
 
     @Nullable
@@ -94,7 +74,7 @@ public class RecipeDetailsFragment extends Fragment{
     }
 
     private void setUpIngredientsList(RecyclerView recyclerView) {
-        mIngredientAdapter = new IngrediantsRecyclerViewAdapter(recipe.getIngredients(),getContext());
+        mIngredientAdapter = new IngrediantsRecyclerViewAdapter(recipe.getIngredients(),getActivity());
         RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mlayoutManager);
         recyclerView.setHasFixedSize(true);
@@ -102,7 +82,7 @@ public class RecipeDetailsFragment extends Fragment{
     }
 
     private void setUpStepsList(RecyclerView recyclerView){
-        mStepsAdapter = new StepsRecyclerViewAdapter(recipe.getSteps(),mListener);
+        mStepsAdapter = new StepsRecyclerViewAdapter(recipe.getSteps(), getActivity(), this);
         RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mlayoutManager);
         recyclerView.setHasFixedSize(true);
@@ -116,5 +96,8 @@ public class RecipeDetailsFragment extends Fragment{
                 .setActionBarTitle(recipe.getName());
     }
 
-
+    @Override
+    public void onStepItemClick(int position) {
+        mCallback.onStepSelected(position);
+    }
 }
