@@ -76,7 +76,7 @@ public class RecipesActivity extends AppCompatActivity implements RecipeDetailsF
 
     @Override
     public void onStepSelected(int position) {
-        Step step = recipe.getSteps().get(position);
+        Step step = mSteps.get(position);
 
         if (mTwoPane) {
             Bundle bundle = new Bundle();

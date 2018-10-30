@@ -43,11 +43,19 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final StepsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final StepsViewHolder holder,  int position) {
 
 
-        //holder.tv_steps.setText(mSteps.get(position).getShortDescription());
-        holder.bind(mSteps.get(position),mListener);
+        holder.tv_steps.setText(mSteps.get(position).getShortDescription());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                int selectedPosition = position;
+                mListener.onStepItemClick(holder.getAdapterPosition());
+            }
+        });
+
 
 
         ///
@@ -90,16 +98,16 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
 //            notifyDataSetChanged();
 //        }
 
-        public void bind(final Step step, final StepItemClickListener listener) {
-            tv_steps.setText(step.getShortDescription());
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    int selectedPosition = getAdapterPosition();
-                    listener.onStepItemClick(selectedPosition);
-                }
-            });
+//        public void bind(final Step step, final StepItemClickListener listener) {
+//            tv_steps.setText(step.getShortDescription());
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override public void onClick(View v) {
+//                    int selectedPosition = getAdapterPosition();
+//                    listener.onStepItemClick(selectedPosition);
+//                }
+//            });
    }
-   }
+
 
 }
 

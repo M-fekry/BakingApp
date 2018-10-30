@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.mfekr.bakiongapp.Adapters.IngrediantsRecyclerViewAdapter;
 import com.example.mfekr.bakiongapp.Adapters.StepsRecyclerViewAdapter;
 import com.example.mfekr.bakiongapp.Model.Recipe;
+import com.example.mfekr.bakiongapp.Model.Step;
 import com.example.mfekr.bakiongapp.R;
 import com.example.mfekr.bakiongapp.RecipesActivity;
 
