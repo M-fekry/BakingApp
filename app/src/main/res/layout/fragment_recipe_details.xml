@@ -1,70 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:id="@+id/fragment_recipe_details">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_recipe_details">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ingredient_title"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="16pt"
-            android:fontFamily="sans-serif-smallcaps"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#c0c0c0"/>
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ingredient_title"
+                android:textColor="#000000"
+                android:textSize="16pt"
+                android:fontFamily="sans-serif-smallcaps" />
+                <Button
+                    android:layout_width="110dp"
+                    android:layout_height="50dp"
+                    android:text="Add Widget"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/btn_widget"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#c0c0c0"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recycler_view_ingredients">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_view_ingredients">
 
-        </android.support.v7.widget.RecyclerView>
+            </android.support.v7.widget.RecyclerView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#c0c0c0"
-            android:layout_marginTop="3dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#c0c0c0"
+                android:layout_marginTop="3dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/steps_title"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="16pt"
-            android:fontFamily="sans-serif-smallcaps" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/steps_title"
+                android:textColor="#000000"
+                android:textSize="16pt"
+                android:fontFamily="sans-serif-smallcaps" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#c0c0c0"
-            android:layout_marginTop="3dp"/>
-
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recycler_view_steps"
-            android:layout_marginTop="10dp">
-        </android.support.v7.widget.RecyclerView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#c0c0c0"
+                android:layout_marginTop="3dp"/>
 
 
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_view_steps"
+                android:layout_marginTop="10dp">
+            </android.support.v7.widget.RecyclerView>
 
-    </LinearLayout>
-</RelativeLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
 </ScrollView>

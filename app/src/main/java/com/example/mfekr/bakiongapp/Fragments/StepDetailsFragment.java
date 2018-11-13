@@ -108,16 +108,16 @@ public class StepDetailsFragment extends Fragment {
         }
 
         tvDecription = rootView.findViewById(R.id.tv_description);
-//        tvDecription.setText(mStep.getDescription());
+        tvDecription.setText(mStep.getDescription());
 
         mPlayerView = rootView.findViewById(R.id.playerView);
-//        initializePlayer(Uri.parse(mStep.getVideoURL()));
+        initializePlayer(Uri.parse(mStep.getVideoURL()));
 
 
         mButtonNext = rootView.findViewById(R.id.btn_next);
         mButtonPrev = rootView.findViewById(R.id.btn_prev);
 
-        setupFragmentUI(mStep);
+//        setupFragmentUI(mStep);
 
         return rootView;
     }
@@ -125,8 +125,8 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((StepsActivity) getActivity())
-                .setActionBarTitle(mStep.getShortDescription());
+//        ( getActivity())
+//                .setActionBarTitle(mStep.getShortDescription());
     }
 
 //    private void setUpDetailsFragment(){
@@ -147,21 +147,36 @@ public class StepDetailsFragment extends Fragment {
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(playWhenReady);
             mExoPlayer.seekTo(mediaposition);
+        }else {
+            releasePlayer();
+            // Create an instance of the ExoPlayer.
+            TrackSelector trackSelector = new DefaultTrackSelector();
+            LoadControl loadControl = new DefaultLoadControl();
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+            mPlayerView.setPlayer(mExoPlayer);
+            // Prepare the MediaSource.
+            String userAgent = Util.getUserAgent(getContext(), "BakiongApp");
+            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                    getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+            mExoPlayer.prepare(mediaSource);
+            mExoPlayer.setPlayWhenReady(playWhenReady);
+            mExoPlayer.seekTo(mediaposition);
         }
 
     }
 
-    private void setupFragmentUI(Step step){
+    public void setupFragmentUI(Step step){
         tvDecription.setText(step.getDescription());
         videoURL = step.getVideoURL();
         if (videoURL.length() > 10)
         {  Log.d("StepFragment","on save after 2 "+mediaposition);
+            mPlayerView.setVisibility(View.VISIBLE);
             initializePlayer(Uri.parse(videoURL));
         }
         else
             mPlayerView.setVisibility(View.GONE);
 
-//        initializePlayer(Uri.parse(videoURL));
+        initializePlayer(Uri.parse(videoURL));
     }
 
     private void releasePlayer() {
@@ -177,6 +192,10 @@ public class StepDetailsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
+
+    }
+
+    public void updateStepes(Step step){
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.mfekr.bakiongapp.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +24,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     Context mContext;
 
     public interface StepItemClickListener {
-        void onStepItemClick(int position);
+        void onStepItemClick(Step position);
     }
 
     public StepsRecyclerViewAdapter(List<Step> mSteps,Context mContext, StepItemClickListener mListener) {
@@ -42,8 +43,9 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         return mViewHolder;
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull final StepsViewHolder holder,  int position) {
+    public void onBindViewHolder(@NonNull StepsViewHolder holder,  final int position) {
 
 
         holder.tv_steps.setText(mSteps.get(position).getShortDescription());
@@ -52,7 +54,9 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
             @Override
             public void onClick(View view) {
 //                int selectedPosition = position;
-                mListener.onStepItemClick(holder.getAdapterPosition());
+                    mListener.onStepItemClick(mSteps.get(position));
+
+
             }
         });
 

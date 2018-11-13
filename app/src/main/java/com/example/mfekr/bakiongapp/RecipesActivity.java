@@ -1,6 +1,7 @@
 package com.example.mfekr.bakiongapp;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +20,7 @@ public class RecipesActivity extends AppCompatActivity implements RecipeDetailsF
 
     private boolean mTwoPane;
     Recipe recipe;
-    RecipeDetailsFragment mDetailsFragment;
-
-    List<Step> mSteps;
+    StepDetailsFragment fragment;
 
 
     @Override
@@ -52,7 +51,10 @@ public class RecipesActivity extends AppCompatActivity implements RecipeDetailsF
 
             FragmentManager detailFragmentManager = getSupportFragmentManager();
 
-            StepDetailsFragment fragment = new StepDetailsFragment();
+            fragment = new StepDetailsFragment();
+            Bundle bundle1 = new Bundle();
+            bundle1.putParcelable("step",recipe.getSteps().get(0));
+            fragment.setArguments(bundle1);
             detailFragmentManager.beginTransaction()
                     .add(R.id.step_details_container, fragment)
                     .commit();
@@ -75,18 +77,19 @@ public class RecipesActivity extends AppCompatActivity implements RecipeDetailsF
 
 
     @Override
-    public void onStepSelected(int position) {
-        Step step = mSteps.get(position);
+    public void onStepSelected(Step step) {
 
         if (mTwoPane) {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("step", step);
-            mDetailsFragment = new RecipeDetailsFragment();
-            mDetailsFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.step_details_container, mDetailsFragment)
-                    .commit();
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelable("step", step);
+//            mDetailsFragment = new RecipeDetailsFragment();
+//            mDetailsFragment.setArguments(bundle);
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.step_details_container, mDetailsFragment)
+//                    .commit();
 
+            fragment.setupFragmentUI(step);
+//
 
         } else {
             Intent intent = new Intent(this, StepsActivity.class);
