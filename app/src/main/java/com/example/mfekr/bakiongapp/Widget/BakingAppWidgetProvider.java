@@ -1,5 +1,6 @@
 package com.example.mfekr.bakiongapp.Widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 import com.example.mfekr.bakiongapp.BuildConfig;
+import com.example.mfekr.bakiongapp.MainActivity;
 import com.example.mfekr.bakiongapp.Model.Ingredient;
 import com.example.mfekr.bakiongapp.R;
 
@@ -26,6 +28,8 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         views.setTextViewText(R.id.tv_title, sharedPreferences.getString("WIDGET_TITLE", ""));
         views.setTextViewText(R.id.tv_content, sharedPreferences.getString("WIDGET_INGREDIENT", ""));
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
+
     }
 
     @Override

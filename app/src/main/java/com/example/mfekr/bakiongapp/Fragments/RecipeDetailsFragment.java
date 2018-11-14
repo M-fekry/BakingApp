@@ -3,6 +3,7 @@ package com.example.mfekr.bakiongapp.Fragments;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -112,15 +113,21 @@ public class RecipeDetailsFragment extends Fragment implements StepsRecyclerView
                             .remove("WIDGET_INGREDIENT")
                             .apply();
 
-                    sharedPref
-                            .edit()
+                } else{
+                    sharedPref.edit()
                             .putInt("ID", recipe.getId())
                             .putString("WIDGET_TITLE", recipe.getName())
                             .putString("WIDGET_INGREDIENT", ingredientsStringBuilder())
                             .apply();
-                }
+            }
+
             }
         });
+        ComponentName provider = new ComponentName(getActivity(), BakingAppWidgetProvider.class);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
+        int[] ids = appWidgetManager.getAppWidgetIds(provider);
+        BakingAppWidgetProvider bakingWidgetProvider = new BakingAppWidgetProvider();
+        bakingWidgetProvider.onUpdate(getActivity(), appWidgetManager, ids);
 
         return rootView;
     }
