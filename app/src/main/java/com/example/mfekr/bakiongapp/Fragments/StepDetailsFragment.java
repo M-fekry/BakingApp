@@ -1,9 +1,9 @@
 package com.example.mfekr.bakiongapp.Fragments;
 
-import android.content.SharedPreferences;
+
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,13 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.mfekr.bakiongapp.Model.Step;
 import com.example.mfekr.bakiongapp.R;
-import com.example.mfekr.bakiongapp.StepsActivity;
+
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -28,11 +28,10 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import java.util.ArrayList;
 
 public class StepDetailsFragment extends Fragment {
 
@@ -41,9 +40,6 @@ public class StepDetailsFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     TextView tvDecription;
     ImageButton mButtonNext, mButtonPrev;
-    RecipeDetailsFragment.OnStepClickListener mCallback;
-    private ArrayList<Step> steps;
-
     String videoURL = null;
     private int postion;
     long mediaposition = 0;
@@ -55,22 +51,7 @@ public class StepDetailsFragment extends Fragment {
     public StepDetailsFragment() {
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        SharedPreferences sharedPreferences = PreferenceManager
-//                .getDefaultSharedPreferences(getContext());
-//        if(savedInstanceState != null) {
-//            videoURL =savedInstanceState.getString("VIDEO_URL");
-//            postion=savedInstanceState.getInt("POSITION");
-//            mediaposition=savedInstanceState.getLong("MEDIA_POSITION");
-//        }else{
-//            videoURL = sharedPreferences.getString("vid", "");
-//            postion = sharedPreferences.getInt("position", -1);
-//            playWhenReady = true;
-//            mediaposition=0;
-//        }
-//    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -114,10 +95,8 @@ public class StepDetailsFragment extends Fragment {
         initializePlayer(Uri.parse(mStep.getVideoURL()));
 
 
-        mButtonNext = rootView.findViewById(R.id.btn_next);
-        mButtonPrev = rootView.findViewById(R.id.btn_prev);
 
-//        setupFragmentUI(mStep);
+
 
         return rootView;
     }
@@ -125,13 +104,13 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        ( getActivity())
-//                .setActionBarTitle(mStep.getShortDescription());
+        if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
+            initializePlayer(Uri.parse(mStep.getVideoURL()));
+        }
+
     }
 
-//    private void setUpDetailsFragment(){
-//        tvDecription.setText(mStep.getDescription());
-//    }
+
 
     private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {
@@ -179,6 +158,22 @@ public class StepDetailsFragment extends Fragment {
         initializePlayer(Uri.parse(videoURL));
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
     private void releasePlayer() {
         if (mExoPlayer != null) {
             playerStopPosition = mExoPlayer.getCurrentPosition();
@@ -195,9 +190,7 @@ public class StepDetailsFragment extends Fragment {
 
     }
 
-    public void updateStepes(Step step){
 
-    }
 
 
 }

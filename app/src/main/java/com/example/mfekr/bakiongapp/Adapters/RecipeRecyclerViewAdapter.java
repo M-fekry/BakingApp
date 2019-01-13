@@ -2,7 +2,9 @@ package com.example.mfekr.bakiongapp.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.mfekr.bakiongapp.MainActivity;
+
 import com.example.mfekr.bakiongapp.Model.Recipe;
 import com.example.mfekr.bakiongapp.R;
 import com.example.mfekr.bakiongapp.RecipesActivity;
@@ -60,6 +63,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
     @Override
     public int getItemCount() {
+        if (!isNetworkAvailable()) {
+            Toast.makeText(mContext, "Network not available!", Toast.LENGTH_SHORT).show();
+        }
         return mRecipes.size();
     }
 
@@ -79,6 +85,16 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
             mRecipeName = itemView.findViewById(R.id.tv_recipe_name);
 
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
     }
 
 

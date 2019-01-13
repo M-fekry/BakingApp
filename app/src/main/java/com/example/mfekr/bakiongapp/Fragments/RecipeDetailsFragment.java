@@ -105,29 +105,23 @@ public class RecipeDetailsFragment extends Fragment implements StepsRecyclerView
             @Override
             public void onClick(View view) {
                 sharedPref = getActivity().getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
-                boolean isRecipeInWidget = (sharedPref.getInt("ID", -1) == recipe.getId());
-                if (isRecipeInWidget) {
-                    sharedPref.edit()
-                            .remove("ID")
-                            .remove("WIDGET_TITLE")
-                            .remove("WIDGET_INGREDIENT")
-                            .apply();
 
-                } else{
                     sharedPref.edit()
                             .putInt("ID", recipe.getId())
                             .putString("WIDGET_TITLE", recipe.getName())
                             .putString("WIDGET_INGREDIENT", ingredientsStringBuilder())
                             .apply();
-            }
+
+                ComponentName provider = new ComponentName(getActivity(), BakingAppWidgetProvider.class);
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
+                int[] ids = appWidgetManager.getAppWidgetIds(provider);
+                BakingAppWidgetProvider bakingWidgetProvider = new BakingAppWidgetProvider();
+                bakingWidgetProvider.onUpdate(getActivity(), appWidgetManager, ids);
 
             }
+
         });
-        ComponentName provider = new ComponentName(getActivity(), BakingAppWidgetProvider.class);
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
-        int[] ids = appWidgetManager.getAppWidgetIds(provider);
-        BakingAppWidgetProvider bakingWidgetProvider = new BakingAppWidgetProvider();
-        bakingWidgetProvider.onUpdate(getActivity(), appWidgetManager, ids);
+
 
         return rootView;
     }
@@ -136,9 +130,10 @@ public class RecipeDetailsFragment extends Fragment implements StepsRecyclerView
         StringBuilder ingredient = new StringBuilder();
 
         for (Ingredient ingredients : recipe.getIngredients()) {
-            ingredient.append(String.valueOf(ingredients.getIngredient())).append("  ")
-                    .append(ingredients.getMeasure()).append("  ")
-                    .append(String.valueOf(ingredients.getQuantity())).append("\n");
+            ingredient
+                    .append(String.valueOf(ingredients.getQuantity())).append(" ")
+                    .append(ingredients.getMeasure()).append(" ")
+                    .append(String.valueOf(ingredients.getIngredient())).append("\n");
         }
         return ingredient.toString();
     }

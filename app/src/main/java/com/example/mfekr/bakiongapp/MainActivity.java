@@ -1,5 +1,9 @@
 package com.example.mfekr.bakiongapp;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +23,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+
+
 
     private List<Recipe> mRecipeList;
     private RecyclerView mRecipeRecylcerView;
@@ -49,7 +55,12 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 List<Recipe> recipes = response.body();
-                mRecipeAdapter.setRecipes(recipes);
+                if (recipes == null){
+                    Toast.makeText(MainActivity.this, "Something went wrong, please check your internet connection and try again! ", Toast.LENGTH_SHORT).show();
+                }else {
+                    mRecipeAdapter.setRecipes(recipes);
+                }
+
             }
 
             @Override
@@ -58,5 +69,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
+
+
+
 }

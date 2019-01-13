@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 
 import com.example.mfekr.bakiongapp.BuildConfig;
@@ -27,7 +28,16 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         SharedPreferences sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
         views.setTextViewText(R.id.tv_title, sharedPreferences.getString("WIDGET_TITLE", ""));
         views.setTextViewText(R.id.tv_content, sharedPreferences.getString("WIDGET_INGREDIENT", ""));
+
+
+        Intent openAppIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity (context, 0, openAppIntent, 0);
+        views.setOnClickPendingIntent (R.id.tv_title, pendingIntent);
+        views.setOnClickPendingIntent (R.id.tv_content, pendingIntent);
+
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
+
 
 
     }
@@ -40,11 +50,6 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
 
-           /* Intent clickIntentTemplate = new Intent(context, DetailActivity.class);
-            PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
-                    .addNextIntentWithParentStack(clickIntentTemplate)
-                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setPendingIntentTemplate(R.id.widgetListView, clickPendingIntentTemplate);*/
     }
 
     @Override

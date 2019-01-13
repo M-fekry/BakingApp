@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.mfekr.bakiongapp.Model.Ingredient;
-import com.example.mfekr.bakiongapp.Model.Recipe;
+
 import com.example.mfekr.bakiongapp.R;
 
 import java.util.List;
